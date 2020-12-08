@@ -10,9 +10,9 @@ using namespace std;
 
 class Graph {
 protected:
-    AdjMatrix *matrix;
     Sequence<string> *nodeNames;
 
+    AdjMatrix *matrix;
 public:
     Graph();
 
@@ -35,6 +35,8 @@ public:
     void print();
 
     string nodeName(int index);
+
+    AdjMatrix *getAdjMatrix();
 
 };
 

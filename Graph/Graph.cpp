@@ -93,3 +93,7 @@ void Graph::removeEdge(string node1, string node2) {
     }
 }
 
+AdjMatrix *Graph::getAdjMatrix() {
+    return this->matrix;
+}
+
