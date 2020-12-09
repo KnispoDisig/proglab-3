@@ -20,7 +20,7 @@ public:
 
     unsigned int get(int x, int y);
 
-    void set(int x, int y, unsigned int value);
+    void set(int x, int y, unsigned int value, bool hasSelfEdge = false);
 
     int getSize();
 

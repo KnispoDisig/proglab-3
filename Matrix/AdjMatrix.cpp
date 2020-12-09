@@ -32,9 +32,20 @@ unsigned int AdjMatrix::get(int x, int y) {
     }
 }
 
-void AdjMatrix::set(int x, int y, unsigned int value) {
+void AdjMatrix::set(int x, int y, unsigned int value, bool hasSelfEdge) {
     if (x >= 0 && y >= 0) {
-        if (x != y) {
+        if (!hasSelfEdge) {
+            if (x != y) {
+                Sequence<unsigned int> *copy = matrix->get(x);
+                Sequence<unsigned int> *newRow = new LinkedListSequence<unsigned int>();
+                for (int i = 0; i < copy->getLength(); i++) {
+                    newRow->prepend(copy->get(i));
+                }
+                newRow->set(y, value);
+
+                matrix->set(x, newRow);
+            }
+        } else {
             Sequence<unsigned int> *copy = matrix->get(x);
             Sequence<unsigned int> *newRow = new LinkedListSequence<unsigned int>();
             for (int i = 0; i < copy->getLength(); i++) {

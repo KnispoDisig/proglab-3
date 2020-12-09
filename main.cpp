@@ -4,6 +4,7 @@
 #include "Sequence/Sequence.h"
 #include "Graph/Graph.h"
 #include "Graph/UndirGraph.h"
+#include "Graph/ColoredGraph.h"
 
 void printMatrix(AdjMatrix *matrix) {
     for (int j = 0; j < matrix->getSize(); j++) {
@@ -27,12 +28,17 @@ int main() {
     Graph *graph = new UndirGraph();
     graph->addNode("Moscow");
     graph->addNode("SPB");
-    graph->addNode("Anapa");
+//    graph->addNode("Anapa");
     graph->addNode("BCHT");
 
     graph->addEdge("Moscow", "SPB", 1000);
     graph->addEdge("Moscow", "BCHT", 3500);
-    graph->addEdge("SPB", "Anapa", 2000);
+//    graph->addEdge("SPB", "Anapa", 2000);
+//    graph->addEdge("BCHT", "Anapa", 4000);
+//    graph->addEdge("Moscow", "Anapa", 1000);
+    graph->addEdge("BCHT", "SPB", 100);
 
-    graph->print();
+    ColoredGraph *coloredGraph = new ColoredGraph(graph);
+
+    coloredGraph->printColors();
 }
