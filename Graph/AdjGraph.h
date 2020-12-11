@@ -1,12 +1,11 @@
 //
-// Created by fell2 on 12/9/2020.
+// Created by fell2 on 12/5/2020.
 //
 
 #ifndef PROGLAB3_GRAPH_H
 #define PROGLAB3_GRAPH_H
 
-#include <string>
-#include "../SparseSeq/SparseSeq.cpp"
+#include "../Matrix/AdjMatrix.h"
 
 using namespace std;
 
@@ -14,12 +13,11 @@ class Graph {
 protected:
     Sequence<string> *nodeNames;
 
-    Sequence<SparseSeq<unsigned int> *> *matrix;
-
+    AdjMatrix *matrix;
 public:
     Graph();
 
-    explicit Graph(Sequence<SparseSeq<unsigned int> *> *matrix);
+    explicit Graph(AdjMatrix *matrix);
 
     int nodeCount();
 
@@ -35,11 +33,11 @@ public:
 
     Sequence<string> *listOfNodes();
 
-    unsigned int getEdgeWeight(int x, int y);
-
     void print();    // удалить в конце !!!
 
     string nodeName(int index);
+
+    AdjMatrix *getAdjMatrix();
 
 };
 

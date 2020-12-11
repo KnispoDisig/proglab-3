@@ -1,86 +1,69 @@
 //
-// Created by fell2 on 12/5/2020.
+// Created by fell2 on 12/9/2020.
 //
 
 #include "Graph.h"
 
-#include <utility>
+bool isNull(unsigned int n) {
+    return n == 0;
+}
 
 Graph::Graph() {
-    matrix = new AdjMatrix(0);
     nodeNames = new LinkedListSequence<string>();
+    matrix = new LinkedListSequence<SparseSeq<unsigned int> *>();
 }
 
-Graph::Graph(AdjMatrix *matrix) {
-    this->matrix = new AdjMatrix(*matrix);
-    nodeNames = new LinkedListSequence<string>();
-    for (int i = 0; i < this->matrix->getSize(); i++) {
-        nodeNames->prepend(to_string(i));
-    }
-}
+//Graph::Graph(Sequence<SparseSeq<unsigned int> *> *matrix) {
+//    this->matrix = new LinkedListSequence<SparseSeq<unsigned int> *>();
+//    nodeNames = new LinkedListSequence<string>();
+//
+//    for (int i = 0; i < matrix->getLength(); i++) {
+//        SparseSeq<unsigned int> *copySeq = new SparseSeq<unsigned int>(*(matrix->get(i)));
+//        this->matrix->prepend(copySeq);
+//
+//        nodeNames->prepend(to_string(i));
+//    }
+//}
 
 int Graph::nodeCount() {
-    return matrix->getSize();
+    return this->matrix->getLength();
 }
 
 void Graph::addNode(string node) {
-    matrix->addLayer();
-    nodeNames->prepend(std::move(node));
+    nodeNames->prepend(node);
+
+    for (int i = 0; i < matrix->getLength(); i++) {
+        matrix->get(i)->prepend(0);
+    }
+
+    SparseSeq<unsigned int> *addedLine = new SparseSeq<unsigned int>(matrix->getLength() + 1, 0, isNull);
+    matrix->prepend(addedLine);
+}
+
+void Graph::removeNode(string node) {
+    int nodeIndex = nodeNames->indexOf(node);
+    nodeNames = nodeNames->deleteItem(nodeIndex);
+
+    matrix = matrix->deleteItem(nodeIndex);
+
+    for (int i = 0; i < matrix->getLength(); i++) {
+        matrix->set(i, matrix->get(i)->deleteItem(nodeIndex));
+    }
 }
 
 void Graph::addEdge(string node1, string node2, unsigned int weight) {
     if (nodeNames->contains(node1) && nodeNames->contains(node2)) {
         if (this->hasEdge(node1, node2)) {
             throw invalid_argument("Edge already exists!");
+        } else if (weight == 0) {
+            throw invalid_argument("weight == 0");
         } else {
             int x = nodeNames->indexOf(node1);
             int y = nodeNames->indexOf(node2);
-            matrix->set(x, y, weight);
+            matrix->get(x)->set(y, weight);
         }
     } else {
         throw invalid_argument("No such nodes in graph");
-    }
-}
-
-bool Graph::hasEdge(string node1, string node2) {
-    if (nodeNames->contains(node1) && nodeNames->contains(node2)) {
-        int x = nodeNames->indexOf(node1);
-        int y = nodeNames->indexOf(node2);
-
-        return matrix->get(x, y) != 0;
-    } else {
-        throw invalid_argument("No such nodes in graph");
-    }
-}
-
-void Graph::removeNode(string node) {
-    int nodeIndex = nodeNames->indexOf(node);
-
-    matrix->deleteLayer(nodeIndex);
-    nodeNames = nodeNames->deleteItem(nodeIndex);
-}
-
-Sequence<string> *Graph::listOfNodes() {
-    return this->nodeNames;
-}
-
-string Graph::nodeName(int index) {
-    if (index >= 0 && index < nodeNames->getLength()) {
-        return nodeNames->get(index);
-    } else {
-        throw out_of_range("Index out of range");
-    }
-}
-
-void Graph::print() {
-    for (int i = 0; i < nodeCount(); i++) {
-        std::cout << nodeNames->get(i) << " is connected with:\n";
-        for (int j = 0; j < nodeCount(); j++) {
-            if (matrix->get(i, j) != 0) {
-                std::cout << "- " << nodeNames->get(j) << ", weight: " << matrix->get(i, j) << "\n";
-            }
-        }
-        std::cout << "\n";
     }
 }
 
@@ -89,11 +72,38 @@ void Graph::removeEdge(string node1, string node2) {
         int x = nodeNames->indexOf(node1);
         int y = nodeNames->indexOf(node2);
 
-        matrix->set(x, y, 0);
+        SparseSeq<unsigned int> *newRow = new SparseSeq<unsigned int>(*matrix->get(x));
+        newRow->set(y, 0);
+        matrix->set(x, newRow);
     }
 }
 
-AdjMatrix *Graph::getAdjMatrix() {
-    return this->matrix;
+bool Graph::hasEdge(string node1, string node2) {
+    int x = nodeNames->indexOf(node1);
+    int y = nodeNames->indexOf(node2);
+
+    return matrix->get(x)->get(y) != 0;
 }
+
+string Graph::nodeName(int index) {
+    return nodeNames->get(index);
+}
+
+void Graph::print() {
+    for (int i = 0; i < matrix->getLength(); i++) {
+        Sequence<int> *nodes = matrix->get(i)->notNullIndices();
+        std::cout << nodeName(i) << " is connected with:\n";
+        for (int j = 0; j < nodes->getLength(); j++) {
+            string neighbourName = nodeName(nodes->get(j));
+            int neighbourNodeIndex = nodeNames->indexOf(neighbourName);
+            std::cout << "- " << neighbourName << ", weight: " << matrix->get(i)->get(neighbourNodeIndex) << "\n";
+        }
+        std::cout << "\n";
+    }
+}
+
+unsigned int Graph::getEdgeWeight(int x, int y) {
+    return matrix->get(x)->get(y);
+}
+
 
