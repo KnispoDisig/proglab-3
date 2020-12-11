@@ -2,16 +2,16 @@
 // Created by fell2 on 12/5/2020.
 //
 
-#include "Graph.h"
+#include "AdjGraph.h"
 
 #include <utility>
 
-Graph::Graph() {
+AdjGraph::AdjGraph() {
     matrix = new AdjMatrix(0);
     nodeNames = new LinkedListSequence<string>();
 }
 
-Graph::Graph(AdjMatrix *matrix) {
+AdjGraph::AdjGraph(AdjMatrix *matrix) {
     this->matrix = new AdjMatrix(*matrix);
     nodeNames = new LinkedListSequence<string>();
     for (int i = 0; i < this->matrix->getSize(); i++) {
@@ -19,16 +19,16 @@ Graph::Graph(AdjMatrix *matrix) {
     }
 }
 
-int Graph::nodeCount() {
+int AdjGraph::nodeCount() {
     return matrix->getSize();
 }
 
-void Graph::addNode(string node) {
+void AdjGraph::addNode(string node) {
     matrix->addLayer();
     nodeNames->prepend(std::move(node));
 }
 
-void Graph::addEdge(string node1, string node2, unsigned int weight) {
+void AdjGraph::addEdge(string node1, string node2, unsigned int weight) {
     if (nodeNames->contains(node1) && nodeNames->contains(node2)) {
         if (this->hasEdge(node1, node2)) {
             throw invalid_argument("Edge already exists!");
@@ -42,7 +42,7 @@ void Graph::addEdge(string node1, string node2, unsigned int weight) {
     }
 }
 
-bool Graph::hasEdge(string node1, string node2) {
+bool AdjGraph::hasEdge(string node1, string node2) {
     if (nodeNames->contains(node1) && nodeNames->contains(node2)) {
         int x = nodeNames->indexOf(node1);
         int y = nodeNames->indexOf(node2);
@@ -53,18 +53,18 @@ bool Graph::hasEdge(string node1, string node2) {
     }
 }
 
-void Graph::removeNode(string node) {
+void AdjGraph::removeNode(string node) {
     int nodeIndex = nodeNames->indexOf(node);
 
     matrix->deleteLayer(nodeIndex);
     nodeNames = nodeNames->deleteItem(nodeIndex);
 }
 
-Sequence<string> *Graph::listOfNodes() {
+Sequence<string> *AdjGraph::listOfNodes() {
     return this->nodeNames;
 }
 
-string Graph::nodeName(int index) {
+string AdjGraph::nodeName(int index) {
     if (index >= 0 && index < nodeNames->getLength()) {
         return nodeNames->get(index);
     } else {
@@ -72,7 +72,7 @@ string Graph::nodeName(int index) {
     }
 }
 
-void Graph::print() {
+void AdjGraph::print() {
     for (int i = 0; i < nodeCount(); i++) {
         std::cout << nodeNames->get(i) << " is connected with:\n";
         for (int j = 0; j < nodeCount(); j++) {
@@ -84,7 +84,7 @@ void Graph::print() {
     }
 }
 
-void Graph::removeEdge(string node1, string node2) {
+void AdjGraph::removeEdge(string node1, string node2) {
     if (nodeNames->contains(node1) && nodeNames->contains(node2) && this->hasEdge(node1, node2)) {
         int x = nodeNames->indexOf(node1);
         int y = nodeNames->indexOf(node2);
@@ -93,7 +93,7 @@ void Graph::removeEdge(string node1, string node2) {
     }
 }
 
-AdjMatrix *Graph::getAdjMatrix() {
+AdjMatrix *AdjGraph::getAdjMatrix() {
     return this->matrix;
 }
 

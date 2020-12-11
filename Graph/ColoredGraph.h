@@ -5,21 +5,25 @@
 #ifndef PROGLAB3_COLOREDGRAPH_H
 #define PROGLAB3_COLOREDGRAPH_H
 
-#include "Graph.h"
+#include "UndirGraph.h"
 
-class ColoredGraph : public Graph {
+
+class ColoredGraph : public UndirGraph {
 private:
+
     Sequence<Sequence<string> *> *coloredNodes;
 
-    AdjMatrix *convertToBinaryMatrix(AdjMatrix *adjMatrix);
+    static Sequence<SparseSeq<bool> *> *convertToBinaryMatrix(Sequence<SparseSeq<unsigned int> *> *matrix);
 
     // adding seq2 to seq1
-    Sequence<unsigned int> *binaryAdding(Sequence<unsigned int> *seq1, Sequence<unsigned int> *seq2);
+    static Sequence<bool> *binaryAdding(Sequence<bool> *seq1, Sequence<bool> *seq2);
 
-    bool hasAllOnes(Sequence<unsigned int> *sequence);
+    static bool hasAllOnes(Sequence<bool> *sequence);
 
 public:
-    explicit ColoredGraph(Graph *graph);
+    explicit ColoredGraph(UndirGraph *graph);
+
+    int getColor(string node);
 
     void printColors();
 };

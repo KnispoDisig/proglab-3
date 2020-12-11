@@ -127,3 +127,7 @@ void AdjMatrix::deleteLayer(int index) {
     this->matrix = newMatrix;
     this->size--;
 }
+
+bool AdjMatrix::isEmpty() {
+    return this->size == 0;
+}

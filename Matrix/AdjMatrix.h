@@ -2,10 +2,10 @@
 // Created by fell2 on 12/5/2020.
 //
 
+#pragma once
 #ifndef PROGLAB3_ADJMATRIX_H
 #define PROGLAB3_ADJMATRIX_H
 
-#include "../Sequence/Sequence.h"
 #include "../Sequence/LinkedListSequence/LinkedListSequence.cpp"
 
 class AdjMatrix {
@@ -27,6 +27,8 @@ public:
     void addLayer();
 
     void deleteLayer(int index);
+
+    bool isEmpty();
 };
 
 

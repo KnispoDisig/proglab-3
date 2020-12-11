@@ -2,22 +2,22 @@
 // Created by fell2 on 12/5/2020.
 //
 
-#ifndef PROGLAB3_GRAPH_H
-#define PROGLAB3_GRAPH_H
+#ifndef PROGLAB3_ADJGRAPH_H
+#define PROGLAB3_ADJGRAPH_H
 
 #include "../Matrix/AdjMatrix.h"
 
 using namespace std;
 
-class Graph {
+class AdjGraph {
 protected:
     Sequence<string> *nodeNames;
 
     AdjMatrix *matrix;
 public:
-    Graph();
+    AdjGraph();
 
-    explicit Graph(AdjMatrix *matrix);
+    explicit AdjGraph(AdjMatrix *matrix);
 
     int nodeCount();
 
@@ -42,4 +42,4 @@ public:
 };
 
 
-#endif //PROGLAB3_GRAPH_H
+#endif //PROGLAB3_ADJGRAPH_H
