@@ -5,34 +5,60 @@
 #ifndef PROGLAB3_TEST_H
 #define PROGLAB3_TEST_H
 
+#include "../Graph/ColoredGraph.h"
+#include "../SparseSeq/SparseSeq.h"
 
 class Test {
+// auxiliary functions
 private:
-    void success();
+    static void success();
 
-    void fail();
+    static void fail();
 
+    static void check(bool test);
 
+    static Graph *generateGraph();
+
+    static Graph *generateUndirGraph();
 
 // test Graph
 private:
-    bool graphCreating();
+    static bool graphCreating();
 
-    bool graphCountNodes();
+    static bool graphCountNodes();
 
-    bool graphAddNode();
+    static bool graphAddNode();
 
-    bool graphRemoveNode();
+    static bool graphRemoveNode();
 
-    bool graphAddEdge();
+    static bool graphAddEdge();
 
-    bool graphRemoveEdge();
+    static bool graphRemoveEdge();
 
-    bool graphHasEdge();
+    static bool graphListOfNodes();
 
-    bool graphListOfNodes();
+    static bool graphNodeName();
 
-    bool graphNodeName();
+public:
+
+    static void testGraph();
+
+// test UndirGraph
+private:
+    static bool undirGraphAddEdge();
+
+    static bool undirGraphRemoveEdge();
+
+public:
+    static void testUndirGraph();
+
+// test ColoredGraph
+public:
+    static void colorizingTest();
+
+
+public:
+    static void launchAllTests();
 };
 
 

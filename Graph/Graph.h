@@ -19,8 +19,6 @@ protected:
 public:
     Graph();
 
-    explicit Graph(Sequence<SparseSeq<unsigned int> *> *matrix);
-
     int nodeCount();
 
     void addNode(string node);
@@ -33,9 +31,13 @@ public:
 
     bool hasEdge(string node1, string node2);
 
+    bool hasNode(string node);
+
     Sequence<string> *listOfNodes();
 
     unsigned int getEdgeWeight(int x, int y);
+
+    Sequence<string> *getNeighbours(string nodeName);
 
     void print();    // удалить в конце !!!
 

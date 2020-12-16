@@ -30,24 +30,32 @@ int Graph::nodeCount() {
 }
 
 void Graph::addNode(string node) {
-    nodeNames->prepend(node);
+    if (!nodeNames->contains(node)) {
+        nodeNames->prepend(node);
 
-    for (int i = 0; i < matrix->getLength(); i++) {
-        matrix->get(i)->prepend(0);
+        for (int i = 0; i < matrix->getLength(); i++) {
+            matrix->get(i)->prepend(0);
+        }
+
+        SparseSeq<unsigned int> *addedLine = new SparseSeq<unsigned int>(matrix->getLength() + 1, 0, isNull);
+        matrix->prepend(addedLine);
+    } else {
+        throw invalid_argument("there is node in graph with such name already");
     }
-
-    SparseSeq<unsigned int> *addedLine = new SparseSeq<unsigned int>(matrix->getLength() + 1, 0, isNull);
-    matrix->prepend(addedLine);
 }
 
 void Graph::removeNode(string node) {
-    int nodeIndex = nodeNames->indexOf(node);
-    nodeNames = nodeNames->deleteItem(nodeIndex);
+    if (nodeCount() != 0) {
+        if (nodeNames->contains(node)) {
+            int nodeIndex = nodeNames->indexOf(node);
+            nodeNames = nodeNames->deleteItem(nodeIndex);
 
-    matrix = matrix->deleteItem(nodeIndex);
+            matrix = matrix->deleteItem(nodeIndex);
 
-    for (int i = 0; i < matrix->getLength(); i++) {
-        matrix->set(i, matrix->get(i)->deleteItem(nodeIndex));
+            for (int i = 0; i < matrix->getLength(); i++) {
+                matrix->set(i, matrix->get(i)->deleteItem(nodeIndex));
+            }
+        }
     }
 }
 
@@ -75,6 +83,8 @@ void Graph::removeEdge(string node1, string node2) {
         SparseSeq<unsigned int> *newRow = new SparseSeq<unsigned int>(*matrix->get(x));
         newRow->set(y, 0);
         matrix->set(x, newRow);
+    } else {
+        throw std::exception();
     }
 }
 
@@ -102,8 +112,42 @@ void Graph::print() {
     }
 }
 
+
+
 unsigned int Graph::getEdgeWeight(int x, int y) {
     return matrix->get(x)->get(y);
+}
+
+bool Graph::hasNode(string node) {
+    return this->nodeNames->contains(node);
+}
+
+Sequence<string> *Graph::listOfNodes() {
+    Sequence<string> *result = new LinkedListSequence<string>();
+    for (int i = 0; i < nodeCount(); i++) {
+        result->prepend(nodeName(i));
+    }
+
+    return result;
+}
+
+Sequence<string> *Graph::getNeighbours(string nodeName) {
+    if (nodeNames->contains(nodeName)) {
+        Sequence<string> *result = new LinkedListSequence<string>();
+        int index = nodeNames->indexOf(nodeName);
+
+        SparseSeq<unsigned int> *neighbours = matrix->get(index);
+
+        for (int i = 0; i < neighbours->getLength(); i++) {
+            if (neighbours->get(i) != 0) {
+                result->prepend(nodeNames->get(i));
+            }
+        }
+
+        return result;
+    } else {
+        throw std::exception();
+    }
 }
 
 
