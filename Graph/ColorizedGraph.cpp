@@ -2,7 +2,7 @@
 // Created by fell2 on 12/8/2020.
 //
 
-#include "ColoredGraph.h"
+#include "ColorizedGraph.h"
 
 bool intIsNull(unsigned int n) {
     return n == 0;
@@ -12,7 +12,7 @@ bool boolIsNull(bool b) {
     return !b;
 }
 
-ColoredGraph::ColoredGraph(UndirGraph *graph) {
+ColorizedGraph::ColorizedGraph(UndirGraph *graph) {
     // матрица та же самая
     matrix = new LinkedListSequence<SparseSeq<unsigned int> *>();
     for (int i = 0; i < graph->nodeCount(); i++) {
@@ -45,12 +45,11 @@ ColoredGraph::ColoredGraph(UndirGraph *graph) {
         if (excludedNodes->contains(i)) {                                       // если вершина уже покрашена, то пропускаем
             continue;
         } else {
-            bool f = binMatrix->get(0)->get(0);
             Sequence<bool> *row_i = binMatrix->get(i)->toSeq();                 // получаем i-ю строку
 
             Sequence<int> *listOfUnicolorous = new LinkedListSequence<int>();   // список вершин одного цвета
             listOfUnicolorous->prepend(i);
-            excludedNodes->prepend(i);                                          // вершина i теперь покрашена
+            excludedNodes->prepend(i);                                          // вершина i теперь вычеркнута
 
             while (!hasAllOnes(row_i)) {
                 int indexNotNeighbour = -1;
@@ -89,7 +88,7 @@ ColoredGraph::ColoredGraph(UndirGraph *graph) {
 
 }
 
-bool ColoredGraph::hasAllOnes(Sequence<bool> *sequence) {
+bool ColorizedGraph::hasAllOnes(Sequence<bool> *sequence) {
     for (int i = 0; i < sequence->getLength(); i++) {
         if (!sequence->get(i)) {
             return false;
@@ -99,7 +98,7 @@ bool ColoredGraph::hasAllOnes(Sequence<bool> *sequence) {
     return true;
 }
 
-Sequence<bool> *ColoredGraph::binaryAdding(Sequence<bool> *seq1, Sequence<bool> *seq2) {
+Sequence<bool> *ColorizedGraph::binaryAdding(Sequence<bool> *seq1, Sequence<bool> *seq2) {
     if (seq1->getLength() == seq2->getLength()) {
         Sequence<bool> *binSum = new LinkedListSequence<bool>();
 
@@ -113,17 +112,7 @@ Sequence<bool> *ColoredGraph::binaryAdding(Sequence<bool> *seq1, Sequence<bool> 
     }
 }
 
-void ColoredGraph::printColors() {
-    for (int i = 0; i < coloredNodes->getLength(); i++) {
-        std::cout << (i + 1) << " color: \n";
-        for (int j = 0; j < coloredNodes->get(i)->getLength(); j++) {
-            std::cout << "- " << coloredNodes->get(i)->get(j) << "\n";
-        }
-        std::cout << "\n";
-    }
-}
-
-Sequence<SparseSeq<bool> *> *ColoredGraph::convertToBinaryMatrix(Sequence<SparseSeq<unsigned int> *> *matrix) {
+Sequence<SparseSeq<bool> *> *ColorizedGraph::convertToBinaryMatrix(Sequence<SparseSeq<unsigned int> *> *matrix) {
     Sequence<SparseSeq<bool> *> *binMatrix = new LinkedListSequence<SparseSeq<bool> *>();
 
     for (int i = 0; i < matrix->getLength(); i++) {
@@ -142,7 +131,7 @@ Sequence<SparseSeq<bool> *> *ColoredGraph::convertToBinaryMatrix(Sequence<Sparse
     return binMatrix;
 }
 
-int ColoredGraph::getColor(string node) {
+int ColorizedGraph::getColor(string node) {
     if (nodeNames->contains(node)) {
         for (int i = 0; i < coloredNodes->getLength(); i++) {
             if (coloredNodes->get(i)->contains(node)) {
@@ -152,5 +141,8 @@ int ColoredGraph::getColor(string node) {
     } else {
         return -1;
     }
+}
 
+Sequence<Sequence<string> *> *ColorizedGraph::getColoredNodes() {
+    return this->coloredNodes;
 }

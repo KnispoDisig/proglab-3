@@ -99,21 +99,6 @@ string Graph::nodeName(int index) {
     return nodeNames->get(index);
 }
 
-void Graph::print() {
-    for (int i = 0; i < matrix->getLength(); i++) {
-        Sequence<int> *nodes = matrix->get(i)->notNullIndices();
-        std::cout << nodeName(i) << " is connected with:\n";
-        for (int j = 0; j < nodes->getLength(); j++) {
-            string neighbourName = nodeName(nodes->get(j));
-            int neighbourNodeIndex = nodeNames->indexOf(neighbourName);
-            std::cout << "- " << neighbourName << ", weight: " << matrix->get(i)->get(neighbourNodeIndex) << "\n";
-        }
-        std::cout << "\n";
-    }
-}
-
-
-
 unsigned int Graph::getEdgeWeight(int x, int y) {
     return matrix->get(x)->get(y);
 }

@@ -5,7 +5,7 @@
 #ifndef PROGLAB3_TEST_H
 #define PROGLAB3_TEST_H
 
-#include "../Graph/ColoredGraph.h"
+#include "../Graph/ColorizedGraph.h"
 #include "../SparseSeq/SparseSeq.h"
 
 class Test {

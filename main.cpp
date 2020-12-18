@@ -73,6 +73,18 @@ void removeFirstWord(string *str) {
     }
 }
 
+void print_colors(ColorizedGraph *colorizedGraph) {
+    Sequence<Sequence<string> *> *coloredNodes = colorizedGraph->getColoredNodes();
+
+    for (int i = 0; i < coloredNodes->getLength(); i++) {
+        std::cout << (i + 1) << " color: \n";
+        for (int j = 0; j < coloredNodes->get(i)->getLength(); j++) {
+            std::cout << "- " << coloredNodes->get(i)->get(j) << "\n";
+        }
+        std::cout << "\n";
+    }
+}
+
 void print_greetings() {
     std::cout << R"(
   _           _         _  _  ____     _____                 _
@@ -168,7 +180,8 @@ int main() {
                         }
 
                         graph->addEdge(node1, node2, weight);
-                        std::cout << "edge between \"" << node1 << "\" and \"" << node2 << "\" was added successfully\n";
+                        std::cout << "edge between \"" << node1 << "\" and \"" << node2
+                                  << "\" was added successfully\n";
                     } else if (custom_command == "remove-node") {
                         string nodeName = firstWord(custom_request);
 
@@ -192,7 +205,8 @@ int main() {
 
                         if (graph->hasNode(node1) && graph->hasNode(node2) && graph->hasEdge(node1, node2)) {
                             graph->removeEdge(node1, node2);
-                            std::cout << "edge between \"" << node1 << "\" and \"" << node2 << "\" was removed successfully\n";
+                            std::cout << "edge between \"" << node1 << "\" and \"" << node2
+                                      << "\" was removed successfully\n";
                         } else {
                             std::cout << "There're not such edge or/and nodes, try again\n\n";
                             continue;
@@ -209,11 +223,11 @@ int main() {
                 std::cout << "** COLORED GRAPH **\n";
 
                 auto start = std::chrono::steady_clock::now();
-                ColoredGraph *coloredGraph = new ColoredGraph(graph);
+                ColorizedGraph *coloredGraph = new ColorizedGraph(graph);
                 auto end = std::chrono::steady_clock::now();
-                std::chrono::duration<double> elapsed_seconds = end-start;
+                std::chrono::duration<double> elapsed_seconds = end - start;
 
-                coloredGraph->printColors();
+                print_colors(coloredGraph);
 
                 std::cout << "Algorithm duration: " << elapsed_seconds.count() << "s\n";
 
@@ -230,12 +244,17 @@ int main() {
                     continue;
                 }
 
-                int maxEdgeCount = ( nodeCount * (nodeCount - 1) ) / 3;         // добавляем все ноды
+                int maxEdgeCount = (nodeCount * (nodeCount - 1)) / 2;         // добавляем все ноды
                 for (int i = 0; i < nodeCount; i++) {
                     graph->addNode(to_string(i));
                 }
 
-                int edgeCount = rand() % maxEdgeCount + 1;                  // добавляем все ребра
+                int edgeCount;
+                if (maxEdgeCount == 0) {
+                    edgeCount = 0;
+                } else {
+                    edgeCount = rand() % maxEdgeCount + 1;                  // добавляем все ребра
+                }
                 for (int i = 0; i < edgeCount; i++) {
                     string first_node, second_node;
                     do {
@@ -252,11 +271,11 @@ int main() {
                 println("** COLORIZED GRAPH **");
 
                 auto start = std::chrono::steady_clock::now();
-                ColoredGraph *coloredGraph = new ColoredGraph(graph);
+                ColorizedGraph *coloredGraph = new ColorizedGraph(graph);
                 auto end = std::chrono::steady_clock::now();
 
-                std::chrono::duration<double> elapsed_seconds = end-start;
-                coloredGraph->printColors();
+                std::chrono::duration<double> elapsed_seconds = end - start;
+                print_colors(coloredGraph);
 
                 std::cout << "Algorithm duration: " << elapsed_seconds.count() << "s\n";
             } else {

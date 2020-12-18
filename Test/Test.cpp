@@ -272,7 +272,7 @@ void Test::colorizingTest() {
     undirGraph->addEdge("2", "4", 1);
     undirGraph->addEdge("4", "3", 1);
 
-    ColoredGraph *coloredGraph = new ColoredGraph(undirGraph);
+    ColorizedGraph *coloredGraph = new ColorizedGraph(undirGraph);
 
     int color1 = coloredGraph->getColor("1");
     int color2 = coloredGraph->getColor("2");

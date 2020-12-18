@@ -2,13 +2,13 @@
 // Created by fell2 on 12/8/2020.
 //
 
-#ifndef PROGLAB3_COLOREDGRAPH_H
-#define PROGLAB3_COLOREDGRAPH_H
+#ifndef PROGLAB3_COLORIZEDGRAPH_H
+#define PROGLAB3_COLORIZEDGRAPH_H
 
 #include "UndirGraph.h"
 
 
-class ColoredGraph : public UndirGraph {
+class ColorizedGraph : UndirGraph {
 private:
 
     Sequence<Sequence<string> *> *coloredNodes;
@@ -21,12 +21,12 @@ private:
     static bool hasAllOnes(Sequence<bool> *sequence);
 
 public:
-    explicit ColoredGraph(UndirGraph *graph);
+    explicit ColorizedGraph(UndirGraph *graph);
 
     int getColor(string node);
 
-    void printColors();
+    Sequence<Sequence<string> *> *getColoredNodes();
 };
 
 
-#endif //PROGLAB3_COLOREDGRAPH_H
+#endif //PROGLAB3_COLORIZEDGRAPH_H

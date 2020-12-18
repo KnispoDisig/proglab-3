@@ -39,10 +39,7 @@ public:
 
     Sequence<string> *getNeighbours(string nodeName);
 
-    void print();    // удалить в конце !!!
-
     string nodeName(int index);
-
 };
 
 
